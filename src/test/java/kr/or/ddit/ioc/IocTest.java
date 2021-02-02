@@ -6,23 +6,26 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.or.ddit.test.config.WebTestConfig;
 import kr.or.ddit.user.service.UserService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/kr/or/ddit/ioc/ioc.xml")
-public class IocTest {
 
-	@Resource(name="userServiceCons")
-	private UserService userServiceCons;
+public class IocTest extends WebTestConfig{
+
 	
-	@Resource(name="userService")
+	//@Resource(name="userService")
+	@Autowired
 	private UserService userService;
 	
 	@Resource(name="userService")
 	private UserService userService2;
+	
+	@Resource(name="userServiceCons")
+	private UserService userServiceCons;
 	
 	@Resource(name="userServicePrototype")
 	private UserService userServicePrototype;
@@ -33,7 +36,7 @@ public class IocTest {
 	@Resource(name="dbConfig")
 	private DbConfig dbConfig;
 	
-	// userServiceCons ½ºÇÁ¸µ ºóÀÌ Á¤»óÀûÀ¸·Î »ı¼º µÇ¾ú´ÂÁö Å×½ºÆ®
+	// userServiceCons ìŠ¤í”„ë§ ë¹ˆì´ ì •ìƒì ìœ¼ë¡œ ìƒì„±ë˜ì—ˆëŠ”ì§€ í…ŒìŠ¤íŠ¸
 	@Test
 	public void userServiceConsTest() {
 		/***Given***/
@@ -47,22 +50,22 @@ public class IocTest {
 	
 	@Test
 	public void beanScopeTest() {
-		//µ¿ÀÏÇÑ ½ºÇÁ¸µ ºóÀ» ÁÖÀÔ¹Ş¾ÒÀ¸¹Ç·Î userService, userServce2´Â °°Àº °´Ã¼´Ù
+		// ë™ì¼í•œ ìŠ¤í”„ë§ ë¹ˆì„ ì£¼ì…ë°›ì•˜ìœ¼ë¯€ë¡œ userSerivce, userService2ëŠ” ê°™ì€ ê°ì²´ë‹¤
 		assertEquals(userService, userService2);
 	}
 
 	@Test 
 	public void beanScopeTest2() {
 		
-		//µğÀÚÀÎ ÆĞÅÏÀÇ singleton °³³äÀ¸·Î º¸¸é µÎ°³ÀÇ °´Ã¼´Â ÇÑ Å¬·¡½º·ÎºÎÅÍ ³ª¿ÔÀ¸¹Ç·Î µ¿ÀÏ ÇØ¾ß
-		//ÇÏÁö¸¸ ½ºÇÁ¸µÀÇ singleton °³³äÀº bean ¿¤·¹¸àÆ®¸¦ ±âÁØÀ¸·Î ÇÏ³ªÀÇ °´Ã¼°¡ »ı¼ºµÈ´Ù.
+		// ë””ìì¸ íŒ¨í„´ì˜ singlton ê°œë…ìœ¼ë¡œ ë³´ë©´ ë‘ ê°œë…ì˜ ê°ì²´ëŠ” í•œ í´ë˜ìŠ¤ë¡œë¶€í„° ë‚˜ì™“ìœ¼ë¯€ë¡œ ë™ì¼ í•´ì•¼í•¨ 
+		// í•˜ì§€ë§Œ ìŠ¤í”„ë§ì˜ singleton ê°œë…ì€ bean ì—˜ë ˆë©˜íŠ¸ë¥¼ ê¸°ì¤€ìœ¼ë¡œ í•˜ë‚˜ì˜ ê°ì²´ê°€ ìƒì„±ëœë‹¤. 
 		assertNotEquals(userService, userServiceCons);
 	}
 	
 	@Test
 	public void beanScopePrototypeTest() {
 		
-		//µ¿ÀÏÇÑ userServicePrototype ºóÀ» ÁÖÀÔ (scope : prototype)
+		//ë™ì¼í•œ userServicePrototype ë¹ˆì„ ì£¼ì… (scope : prototype)
 		assertNotEquals(userServicePrototype, userServicePrototype2);
 	}
 	

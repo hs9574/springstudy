@@ -1,26 +1,70 @@
 package kr.or.ddit.user.repository;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Repository;
 
+import kr.or.ddit.common.model.PageVo;
 import kr.or.ddit.user.model.UserVo;
 
 // <bean id="" class=""
-// @Repository¿¡¼­ º°´Ù¸¥ ¼³Á¤À» ÇÏÁö ¾ÊÀ¸¸é ½ºÇÁ¸µ ºó ÀÌ¸§À¸·Î class ÀÌ¸§¿¡¼­ Ã¹±ÛÀÚ¸¦ ¼Ò¹®ÀÚ·Î ÇÑ
-// ¹®ÀÚ¿­ÀÌ ½ºÇÁ¸µ ºóÀÇ ÀÌ¸§À¸·Î ¼³Á¤µÈ´Ù
+//@Repositoryì—ì„œ ë³„ë‹¤ë¥¸ ì„¤ì •ì„ í•˜ì§€ ì•Šìœ¼ë©´ ìŠ¤í”„ë§ ë¹ˆ ì´ë¦„ìœ¼ë¡œ class ì´ë¦„ì—ì„œ ì²«ê¸€ìë¥¼ ì†Œë¬¸ìë¡œ í•œ 
+//ë¬¸ìì—´ì´ ìŠ¤í”„ë§ ë¹ˆì˜ ì´ë¦„ìœ¼ë¡œ ì„¤ì •ëœë‹¤.
 // UserDaoImpl ==> userDaoImpl
 
 // UserDao / UserDaoImpl ==> @Resource(name="userDaoImpl")
 // UserDaoI / UserDao	 ==> @Resource(name="userDao")
 
+@ImportResource(locations = {"classpath:/kr/or/ddit/config/spring/datasource-context.xml"})
 @Repository("userDao")
 public class UserDaoImpl implements UserDao{
 
+	@Resource(name = "sqlSessionTemplate")
+	private SqlSessionTemplate template;
+	
 	@Override
-	public UserVo getUser(String userid) {
-		// ¿ø·¡´Â µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ Á¶È¸¸¦ ÇØ¾ßÇÏ³ª, °³¹ß ÃÊ±â´Ü°è¶ó
-		// ¼³Á¤ÀÌ ¿Ï·áµÇÁö ¾ÊÀ½, ÇöÀç È®ÀÎÇÏ·Á°í ÇÏ´Â ±â´ÉÀº ½ºÇÁ¸µ ÄÁÅ×ÀÌ³Ê¿¡ ÃÊÁ¡À» ¸ÂÃß±â À§ÇØ
-		// new ¿¬»êÀÚ¸¦ ÅëÇØ »ı¼ºÇÑ vo°´Ã¼¸¦ ¹İÈ¯
-		return new UserVo("brown", "ºê¶ó¿î");
+	public UserVo selectUser(String userid) {
+		// ì›ë˜ëŠ” ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì¡°íšŒë¥¼ í•´ì•¼í•˜ë‚˜, ê°œë°œ ì´ˆê¸°ë‹¨ê³„ë¼
+		// ì„¤ì •ì´ ì™„ë£Œë˜ì§€ ì•ŠìŒ, í˜„ì¬ í™•ì¸í•˜ë ¤ê³  í•˜ëŠ” ê¸°ëŠ¥ì€ ìŠ¤í”„ë§ ì»¨í…Œì´ë„ˆì— ì´ˆì ì„ ë§ì¶”ê¸° ìœ„í•´
+		// new ì—°ì‚°ìë¥¼ í†µí•´ ìƒì„±í•œ voê°ì²´ë¥¼ ë°˜í™˜
+		
+		return template.selectOne("users.selectUser", userid);
 	}
+
+	@Override
+	public List<UserVo> selectAllUser() {
+		return template.selectList("users.selectAllUser");
+	}
+
+	@Override
+	public List<UserVo> selectPagingUser(PageVo pagevo) {
+		return template.selectList("users.selectPagingUser", pagevo);
+	}
+
+	@Override
+	public int selectAllUserCnt() {
+		return template.selectOne("users.selectAllUserCnt");
+	}
+
+	@Override
+	public int modifyUser(UserVo uservo) {
+		return template.update("users.modifyUser", uservo);
+	}
+
+	@Override
+	public int registUser(UserVo uservo) {
+		return template.insert("users.registUser", uservo);
+	}
+
+	@Override
+	public int deleteUser(String userid) {
+		return template.delete("users.deleteUser", userid);
+	}
+
+	
 
 }
