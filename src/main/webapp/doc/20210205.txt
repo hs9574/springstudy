@@ -1,0 +1,6 @@
+***
+localhost/hello/hello ==>화면에 hello 문자만 보이면 됨
+
+1. spring framework를 이용하여 신규 프로젝트로
+단 pom.xml을 수업시간에 사용한 파일을 통해 복사 (spring bean configuration 파일은 신규로 만들기) (완)
+

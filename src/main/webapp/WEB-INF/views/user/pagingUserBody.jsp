@@ -1,28 +1,8 @@
-<%@page import="kr.or.ddit.common.model.PageVo"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="kr.or.ddit.user.model.UserVo"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="${cp}/../favicon.ico">
 
-<title>user</title>
-<link href="${cp}/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap core CSS -->
-<link href="${cp}/css/dashboard.css" rel="stylesheet">
-<link href="${cp}/css/blog.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 //문서 로딩이 완료되고 나서 실행되는 영역
 $(function(){
@@ -38,23 +18,17 @@ $(function(){
 	$('#insBtn').on("click",function(){
 		location.href= '${cp}/user/registUser';
 	})
+	
+	
 })
 </script>
-</head>
-<body>
 	<form id="frm" action="${cp}/user/user">
 		<input type="hidden" name="userid" id="userid" value=""/>
 	</form>
-	<%@ include file="/WEB-INF/views/common/header.jsp"%>
-	<div class="container-fluid">
-		<div class="col-sm-3 col-md-2 sidebar">
-			<%@ include file="/WEB-INF/views/common/left.jsp"%>
-		</div>
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 			<div class="row">
 				<div class="col-sm-8 blog-main">
-					<h2 class="sub-header">사용자</h2>
+					<h2 class="sub-header">사용자(tiles)</h2>
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<tr>
@@ -99,7 +73,3 @@ $(function(){
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</body>
-</html>

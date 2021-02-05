@@ -7,14 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="${cp}/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap core CSS -->
-<script src="${cp}/js/bootstrap.js"></script>
-<!-- Custom styles for this template -->
-<link href="${cp}/css/dashboard.css" rel="stylesheet">
-<link href="${cp}/css/blog.css" rel="stylesheet">
-
+<%@ include file="/WEB-INF/views/common/common_lib.jsp"%>
 <script>
 //문서 로딩이 완료 되었을 때
 $(function(){
@@ -46,8 +39,8 @@ $(function(){
 					<label for="userNm" class="col-sm-2 control-label">사용자 사진</label>
 					<div class="col-sm-10">
 						<%-- <img src="${cp}/profile/${user.userid }.png"/> --%>
-						<a href="/profileDownload?userid=${user.userid }">
-							<img src="/profile?userid=${user.userid }"/>
+						<a href="/user/profileDownload?userid=${user.userid }">
+							<img src="/user/profile?userid=${user.userid }"/>
 						</a>
 					</div>
 				</div>

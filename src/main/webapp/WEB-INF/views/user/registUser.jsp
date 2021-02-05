@@ -1,6 +1,7 @@
-<%@page import="kr.or.ddit.user.model.UserVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +36,7 @@ $(function(){
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	<div class="container-fluid">
 		<div class="col-sm-3 col-md-2 sidebar">
+			spring message : <spring:message code="GREETTING" arguments="brown"/>
 			<%@ include file="/WEB-INF/views/common/left.jsp"%>
 		</div>
 		
@@ -42,9 +44,10 @@ $(function(){
 			<form class="form-horizontal" role="form" action="${cp}/user/registUser" method="post" enctype="multipart/form-data">
 				
 				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">사용자 아이디</label>
+					<label for="userNm" class="col-sm-2 control-label"><spring:message code="USERID"/></label>
 					<div class="col-sm-8">
 						<input type="text" class="form-control" id="userid" name="userid" placeholder="아이디 입력" value="${param.userid}">
+						<span style="color: red;"><form:errors path="userVo.userid"/></span>
 						<input type="file" class="form-control" name="profile"/>
 					</div>
 					<div class="col-sm-2">
@@ -53,33 +56,33 @@ $(function(){
 				</div>
 
 				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">사용자 이름</label>
+					<label for="userNm" class="col-sm-2 control-label"><spring:message code="USERNM"/></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="usernm" name="usernm" placeholder="이름 입력" value="${param.usernm}">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">별명</label>
+					<label for="userNm" class="col-sm-2 control-label"><spring:message code="ALIAS"/></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="alias" name="alias" placeholder="별명 입력" value="${param.alias}">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">비밀번호</label>
+					<label for="userNm" class="col-sm-2 control-label"><spring:message code="PASS"/></label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control" id="pass" name="pass" placeholder="비밀번호" value="${param.pass}">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="pass" class="col-sm-2 control-label">등록일시</label>
+					<label for="pass" class="col-sm-2 control-label"><spring:message code="REG_DT"/></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="reg_dt" name="reg_dt" placeholder="날짜" value="${param.reg_dt}">
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<label for="pass" class="col-sm-2 control-label">도로주소</label>
+					<label for="pass" class="col-sm-2 control-label"><spring:message code="ADDR1"/></label>
 					<div class="col-sm-8">
 						<input type="text" class="form-control" id="addr1" name="addr1" placeholder="도로주소" value="${param.addr1}" readonly>
 					</div>
@@ -89,14 +92,14 @@ $(function(){
 				</div>
 				
 				<div class="form-group">
-					<label for="pass" class="col-sm-2 control-label">상세주소</label>
+					<label for="pass" class="col-sm-2 control-label"><spring:message code="ADDR2"/></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="addr2" name="addr2" placeholder="상세주소" value="${param.addr2}">
 					</div>
 				</div>
 				
 				<div class="form-group">
-					<label for="pass" class="col-sm-2 control-label">우편번호</label>
+					<label for="pass" class="col-sm-2 control-label"><spring:message code="ZIPCODE"/></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="우편번호" value="${param.zipcode}" readonly>
 					</div>
@@ -108,6 +111,20 @@ $(function(){
 					</div>
 				</div>
 			</form>
+			<select name="lang" class="form-control" style=width:100px;>
+				<option value="">언어설정</option>
+				<option value="ko">한국어</option>
+				<option value="en">영어</option>
+			</select>
+			
+			<script>
+				$(function(){
+					$('select[name=lang]').on('change', function(){
+						document.location="/user/registUser?lang="+$(this).val();
+					})
+					$('select[name=lang]').val("${param.lang}");
+				})
+			</script>
 		</div>
 	</div>
 </body>

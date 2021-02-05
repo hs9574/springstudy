@@ -4,7 +4,11 @@
 <ul class="nav nav-sidebar">
 	<li class="active"><a href="<%= request.getContextPath() %>/jsp/main.jsp">Main <span class="sr-only">(current)</span></a></li>
 	<li class="active"><a href="${cp}/user/allUser">전체사용자</a></li>
+	<li class="active"><a href="${cp}/user/allUserTiles">전체사용자(타일즈)</a></li>
 	<li class="active"><a href="<%= request.getContextPath() %>/user/pagingUser">사용자 페이징 리스트</a></li>
+	<li class="active"><a href="<%= request.getContextPath() %>/user/pagingUserTiles">사용자 페이징 리스트(타일즈)</a></li>
+	<li class="active"><a href="<%= request.getContextPath() %>/user/pagingUserAjaxView">사용자 페이징 리스트(ajax)</a></li>
+	
 	<%--
 		/allUser 요청을 처리할 servlet(controller)
 		kr.or.ddit.user.controller.AllUser
