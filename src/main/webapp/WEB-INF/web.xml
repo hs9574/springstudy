@@ -23,10 +23,11 @@
   	<servlet-name>dispatcherServlet</servlet-name>
   	<url-pattern>/</url-pattern>
   </servlet-mapping>
-  
+  <!-- classpath:/kr/or/ddit/config/spring/aop-context.xml -->
   <context-param>
   	<param-name>contextConfigLocation</param-name>
-  	<param-value>classpath:/kr/or/ddit/config/spring/root-context.xml</param-value>
+  	<param-value>classpath:/kr/or/ddit/config/spring/root-context.xml
+  	</param-value>
   </context-param>
   <listener>
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
