@@ -2,35 +2,74 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-<!-- 1. datasource
-	 2. sqlSessionFactoryBean (SqlSessionFactory)
-	 3. sqlSessionTemplate -->
-	
-	<context:property-placeholder location="classpath:/kr/or/ddit/config/db/dbinfo.properties"/>
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}"/>
-		<property name="url" value="${jdbc.url}"/>
-		<property name="username" value="${jdbc.username}"/>
-		<property name="password" value="${jdbc.password}"/>
-		<property name="initialSize" value="3"/>
+	<!-- 1. datasource 2. sqlSessionFactoryBean (SqlSessionFactory) 3. sqlSessionTemplate -->
+
+	<context:property-placeholder
+		location="classpath:/kr/or/ddit/config/db/dbinfo.properties" />
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="3" />
 	</bean>
-	
-	<!-- Class이름 class이름
-		 FactoryBean인터페이스를 구현한 클래스를 스프링 빈으로 등록할 경우
-		 FactoryBean 인터페이스의 getObject 메소드가 리턴하는 객체를 스프링 빈으로 등록한다
-		 
-		 sqlSessionFactory 스프링 빈은 SqlSessionFactoryBean 타입이 아니라
-		 							SqlSessionFactory 타입이다 -->
-	
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:/kr/or/ddit/config/mybatis/mybatis-config.xml"/>
-		<property name="dataSource" ref="dataSource"/>
+
+	<!-- Class이름 class이름 FactoryBean인터페이스를 구현한 클래스를 스프링 빈으로 등록할 경우 FactoryBean 
+		인터페이스의 getObject 메소드가 리턴하는 객체를 스프링 빈으로 등록한다 sqlSessionFactory 스프링 빈은 SqlSessionFactoryBean 
+		타입이 아니라 SqlSessionFactory 타입이다 -->
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:/kr/or/ddit/config/mybatis/mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory"/>
+
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
+
+	<!-- 선언적 트랜젝션 -->
+	<!-- 1.bean 선언순서도 중요하지 않음. 2. 다른 설정파일에 선언한 스프링 빈도 참조하는게 가능하다.선언적 트랜젝션부분을 
+		따로 만들어도 되는데 그때 ref 인 dataSource 는 같이 없어도 어딘가에 있으면 된다. -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<!-- aop 랑 tx 를 namespace 에서 추가하기 -->
+	<!-- advice : 공통의 관심사 : 지금은 트랜젝션 -->
+	<!-- 선언적 트랜젝션 : 개발자가 별도로 commit , rollback 을 호출하지 않음 상황에 따라서 자동으로 commit 
+		, rollback 이 된다. commit : pointcut 으로 설정된 메소드가 실행될 때 해당 메소드에서 RuntimeException 
+		이 발생하지 않고 정상적으로 실행 될경우 => 자동으로 commit rollback : RuntimeException 이 발생될 때 
+		회사마다 자기 상황에 따라 예외를 만들어놓는다. (sql exception 상황 만들어놓음) -->
+
+
+
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+
+	<!-- advisor : advice + pointcut을 결합한 개념 -->
+
+
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* kr.or.ddit..service.*.*(..))" />
+	</aop:config>
 </beans>
